@@ -39,7 +39,7 @@ public class AdminProcessesFragment extends Fragment {
         processesListView.setOnItemClickListener((parent, view1, position, id) -> {
             Intent intent = new Intent(getContext(), AdminProcessActivity.class);
             intent.putExtra("process", processesList[position].toLowerCase());
-            Objects.requireNonNull(getContext()).startActivity(intent);
+            requireContext().startActivity(intent);
                 });
 
         // Inflate the layout for this fragment

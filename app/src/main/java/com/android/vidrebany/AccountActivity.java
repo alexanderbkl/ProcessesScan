@@ -189,8 +189,6 @@ public class AccountActivity extends AppCompatActivity {
                                             && !snapshot.child("montajeEnded").exists()) {
                                         infoTv.setText("El procés cajones SÍ és present.");
                                         infoTv.setVisibility(View.VISIBLE);
-                                    } else {
-                                        infoTv.setVisibility(View.GONE);
                                     }
 
 
@@ -321,7 +319,6 @@ public class AccountActivity extends AppCompatActivity {
         startedTv.setSingleLine(false);
 
         processTv.setText(processState);
-        endedTv.setText(endedOn);
         codeTv.setText(codeNumber);
 
         // Write a message to the database
@@ -338,7 +335,7 @@ public class AccountActivity extends AppCompatActivity {
         cancelBtn.setVisibility(View.GONE);
         processTv.setText(processState);
 
-        infoTv.setVisibility(View.GONE);
+        errorTv.setVisibility(View.GONE);
         DatabaseReference ordersRef = fd.getReference("users").child(number);
         DatabaseReference processesRef = fd.getReference("processes").child(process.toLowerCase());
 
@@ -451,7 +448,14 @@ public class AccountActivity extends AppCompatActivity {
             String process = temp.substring(temp.lastIndexOf(" ")+1);
             String name = nameTv.getText().toString();
             fd = FirebaseDatabase.getInstance();
-            dr = fd.getReference("codes").child(barcode);
+            //check that barcode doesn't have slashes or two dots
+            if (barcode.contains("/") || barcode.contains(".")) {
+                errorTv.setVisibility(View.VISIBLE);
+                errorTv.setText("El codi de barres no pot contenir / o .");
+            } else {
+                dr = fd.getReference("codes").child(barcode);
+            }
+
 
             dr.addListenerForSingleValueEvent(new ValueEventListener() {
                 @SuppressLint("SetTextI18n")
@@ -459,6 +463,9 @@ public class AccountActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                    // boolean corte = snapshot.child("corte").getValue();
                     String currentProcess = process.toLowerCase();
+
+                    //temporarily commented out processes order
+                    /*
                     boolean fastProcesses = currentProcess.equals("corte") ||
                             currentProcess.equals("admin") ||
                             currentProcess.equals("canteado") ||
@@ -529,9 +536,9 @@ public class AccountActivity extends AppCompatActivity {
                             currentProcess.equals("laca") && snapshot.child("mecanizadoEnded").exists() && !snapshot.child("lacaStarted").exists()||
                             currentProcess.equals("embalaje")
                                     && snapshot.child("montajeEnded").exists()&&snapshot.child("espejosEnded").exists() && snapshot.child("cajonesEnded").exists() && snapshot.child("uneroEnded").exists() && !snapshot.child("embalajeStarted").exists()
-                           /* ||
-                            currentProcess.equals("transporte") && !snapshot.child("transporteStarted").exists()
-                                    && snapshot.child("embalajeEnded").exists()*/
+                           // ||
+                           // currentProcess.equals("transporte") && !snapshot.child("transporteStarted").exists()
+                           //         && snapshot.child("embalajeEnded").exists()
                     ) {
                         currentProcess(barcode, process, name, numberTv.getText().toString(), true);
 
@@ -569,9 +576,65 @@ public class AccountActivity extends AppCompatActivity {
                         errorTv.setText("El procés anterior no s'ha complert.");
                         errorTv.setVisibility(View.VISIBLE);
                     }
+                    */
 
+                    /*
+                    if (snapshot.child(currentProcess+"Started").exists() && Objects.equals(Objects.requireNonNull(snapshot.child(currentProcess + "User").getValue()).toString(), nameTv.getText().toString())) {
+                        endProcess(process, barcode, false);
+                    } else {
+                         currentProcess(barcode, process, name, numberTv.getText().toString(), true);
+                    }*/
+                    switch (currentProcess) {
+                        case "montaje":
+                            if (!snapshot.child("montajeStarted").exists()) {
+                                currentProcess(barcode, process, name, numberTv.getText().toString(), false);
+                                if (snapshot.child("cajonesEnded").exists()) {
+                                    infoTv.setText("El procés cajones SÍ és present.");
+                                } else {
+                                    infoTv.setText("El procés cajones NO és present.");
+                                }
+                                infoTv.setVisibility(View.VISIBLE);
+                            } else if (snapshot.child("montajeStarted").exists()) {
+                                infoTv.setVisibility(View.GONE);
+                                if (snapshot.child("montajeEnded").exists()) {
+                                    errorTv.setText("Aquest procés montaje ja ha acabat.");
+                                    errorTv.setVisibility(View.VISIBLE);
+                                } else {
+                                    infoTv.setText("Acabat el procés montaje: " + barcode);
+                                    infoTv.setVisibility(View.VISIBLE);
+                                    endProcess(process, barcode, false);
+                                }
+                            }
+                            break;
+                        case "cajones":
+                            if (!snapshot.child("cajonesStarted").exists()) {
+                                currentProcess(barcode, process, name, numberTv.getText().toString(), true);
+                            } else {
+                                errorTv.setText("El procés cajones ja ha començat.");
+                                errorTv.setVisibility(View.VISIBLE);
+                            }
+                            break;
+                        case "embalaje":
+                            if (!snapshot.child("embalajeStarted").exists() && snapshot.child("montajeEnded").exists()) {
+                                currentProcess(barcode, process, name, numberTv.getText().toString(), true);
+                            } else if (snapshot.child("embalajeStarted").exists()) {
+                                errorTv.setText("El procés embalaje ja ha començat.");
+                                errorTv.setVisibility(View.VISIBLE);
+                            } else {
+                                errorTv.setText("El procés anterior montaje no s'ha complert.");
+                                errorTv.setVisibility(View.VISIBLE);
+                            }
+                            break;
+                        default:
+                            errorTv.setText("Invalid process.");
+                            errorTv.setVisibility(View.VISIBLE);
+                            break;
+                    }
 
                 }
+
+
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {

@@ -49,7 +49,9 @@ public class AdapterProcessDates extends RecyclerView.Adapter<AdapterProcessDate
     public void onBindViewHolder(@NonNull MyHolder myHolder, int i) {
         final int[] suma = {0};
 
-        DatabaseReference processesRef = FirebaseDatabase.getInstance().getReference().child("processes").child(process).child(datesList.get(i).getDate()).child(datesList.get(i).getDate());
+        String safeProcess = process != null ? process : "montaje";
+        String safeDate = datesList.get(i).getDate() != null ? datesList.get(i).getDate() : "01 01 1983";
+        DatabaseReference processesRef = FirebaseDatabase.getInstance().getReference().child("processes").child(safeProcess).child(safeDate).child(safeDate);
         processesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -80,7 +82,7 @@ public class AdapterProcessDates extends RecyclerView.Adapter<AdapterProcessDate
             }
         });
 
-        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("processes").child(process).child(datesList.get(i).getDate()).child(datesList.get(i).getDate());
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("processes").child(safeProcess).child(safeDate).child(safeDate);
         ordersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
