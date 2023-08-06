@@ -59,7 +59,11 @@ public class AdapterDates extends RecyclerView.Adapter<AdapterDates.MyHolder> {
 
                 for(DataSnapshot data: snapshot.getChildren()){
                     if (data != null) {
-                        String code = Objects.requireNonNull(data.child("code").getValue()).toString();
+                        String code = "Acabat a altre dia";
+                        if (data.child("code").exists()) {
+                            code = Objects.requireNonNull(data.child("code").getValue()).toString();
+                        }
+                        System.out.println("Code: " + code);
                         String[] codeparts = code.split("X");
                         int puntuacio;
                         if (isValidIndex(codeparts, 1)) {

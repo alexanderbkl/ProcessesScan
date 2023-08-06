@@ -76,40 +76,44 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    <Button
-            android:id="@+id/cancelBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/endedTv"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/layout_scan_border"
-            android:padding="10dp"
-            android:textColor="@color/white"
-            android:text="CANCEL·LAR PROCÉS"
-            android:textSize="10sp"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
 
     <Button
-            android:id="@+id/scanBtn"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:background="@drawable/layout_scan_border"
+        android:id="@+id/standbyBtn"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/scanBtn"
 
-            android:paddingBottom="10dp"
-            android:text="ESCANEJAR CODI"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" android:layout_centerInParent="true"/>
+        android:layout_alignStart="@+id/scanBtn"
+        android:layout_alignEnd="@+id/scanBtn"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/layout_scan_border"
+        android:padding="10dp"
+        android:text="POSAR STANDBY"
+        android:textColor="@color/red"
+        android:textSize="10sp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/scanBtn"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+
+        android:background="@drawable/layout_scan_border"
+        android:gravity="center"
+        android:padding="10dp"
+        android:paddingBottom="10dp"
+        android:text="ESCANEJAR CODI"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/processTv"
@@ -152,6 +156,45 @@
             android:text="ACABAT: "
             android:textSize="20sp"
             android:textStyle="bold"/>
+
+
+    <LinearLayout
+        android:layout_below="@id/endedTv"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_scan_border"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:textColor="@color/white"
+            android:text="CANCEL·LAR PROCÉS"
+            android:textSize="10sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <Button
+            android:id="@+id/standbyListBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Lista standby"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+
+            android:background="@drawable/layout_scan_border"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            style="?android:attr/buttonBarButtonStyle" />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/numberTv"

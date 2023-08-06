@@ -40,14 +40,12 @@
         android:id="@+id/nomTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dateTv"
         android:text="Usuari: "
         android:textSize="30sp"
         android:textStyle="bold" />
     <TextView
         android:id="@+id/nameTv"
         android:layout_toEndOf="@+id/nomTv"
-        android:layout_below="@+id/dateTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""

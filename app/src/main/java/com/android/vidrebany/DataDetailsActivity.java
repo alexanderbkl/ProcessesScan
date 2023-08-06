@@ -162,9 +162,12 @@ public class DataDetailsActivity extends AppCompatActivity {
                     String started = modelDatesDetails.getStarted();
                     String ended = modelDatesDetails.getEnded();
                     String process = modelDatesDetails.getProcess();
-                        if (code.contains(s) || started.contains(s) || ended.contains(s) || process != null && process.contains(s)) {
-                            datesDetailsList.add(modelDatesDetails);
-                        }
+                    if ((code != null && code.contains(s))
+                            || (started != null && started.contains(s))
+                            || (ended != null && ended.contains(s))
+                            || (process != null && process.contains(s))) {
+                        datesDetailsList.add(modelDatesDetails);
+                    }
 
 
                     adapterDatesDetails = new AdapterDatesDetails(DataDetailsActivity.this, datesDetailsList, date, number);
